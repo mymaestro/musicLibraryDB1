@@ -87,6 +87,56 @@ chmod -R 755 src/includes/
 chmod -R 777 public/files/  # For file uploads
 ```
 
+### Serving audio files (FLAC, MP3, OGG)
+
+If audio fails to play in Firefox with an error like:
+
+    HTTP "Content-Type" of "text/plain" is not supported.
+    Cannot play media. No decoders for requested formats: text/plain
+
+…the problem is the **server's MIME type**, not the browser. Some servers send `.flac` (and other audio) as `text/plain` or `application/octet-stream`, and Firefox refuses to hand those to the audio decoder. (Chrome is more lenient because it sniffs the file's bytes, which is why it may "just work" there.)
+
+#### Fix (Apache / `.htaccess`)
+
+Add an `.htaccess` file in the directory that serves the audio:
+
+    AddType audio/flac .flac
+    AddType audio/mpeg .mp3
+    AddType audio/ogg  .ogg .oga
+
+The rules apply to that directory and everything below it, so placing the file at the root of your media folder covers all subfolders.
+
+#### Fix (Nginx)
+
+Add the types to your `mime.types` (or a `types { }` block):
+
+    types {
+        audio/flac  flac;
+        audio/mpeg  mp3;
+        audio/ogg   ogg oga;
+    }
+
+#### Markup
+
+Include a matching `type` on the `<source>` as a hint (note: the server's Content-Type header still takes precedence in Firefox):
+
+    <audio controls>
+      <source src="path/to/file.flac" type="audio/flac">
+      Your browser does not support the audio element.
+    </audio>
+
+#### After changing MIME types
+
+Browsers and CDNs cache responses, so a stale `text/plain` copy may linger:
+
+- **Browser:** hard-refresh (Ctrl+Shift+R), or test in a private window.
+- **CDN/host:** purge the cache, or append a throwaway query string (`?v=1`) to force a fresh fetch.
+
+Verify the server now sends the right header:
+
+    curl -sI https://example.com/path/to/file.flac
+    # expect: content-type: audio/flac
+
 ### Step 2: Database Setup
 
 Create your database and user:
