@@ -461,13 +461,27 @@ $(document).ready(function() {
             return;
         }
 
+        var headers = Array.from(table.querySelectorAll('thead th')).map(function(th) {
+            return (th.textContent || '').trim();
+        });
         var rows = Array.from(table.querySelectorAll('tr'));
         var csvRows = [];
 
         rows.forEach(function(row) {
             var cells = Array.from(row.querySelectorAll('th, td'));
-            var values = cells.map(function(cell) {
+            var values = cells.map(function(cell, index) {
                 var text = (cell.textContent || '').replace(/\r?\n/g, ' ').trim();
+                var headerName = headers[index] || '';
+
+                if (/date/i.test(headerName) && /^\d{4}-\d{2}-\d{2}$/.test(text)) {
+                    var dateObj = new Date(text + 'T00:00:00');
+                    if (!isNaN(dateObj.getTime())) {
+                        text = (dateObj.getMonth() + 1).toString().padStart(2, '0') + '/' +
+                               dateObj.getDate().toString().padStart(2, '0') + '/' +
+                               dateObj.getFullYear().toString().slice(-2);
+                    }
+                }
+
                 return '"' + text.replace(/"/g, '""') + '"';
             });
             csvRows.push(values.join(','));

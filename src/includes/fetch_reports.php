@@ -128,6 +128,10 @@ if (isset($_POST["report_type"])) {
                     $arranger_names = split_acb_name($row['arranger'] ?? '');
                     $state = '';
                     $venue = $row['venue'] ?? '';
+                    $performance_date = '';
+                    if (!empty($row['performance_date'])) {
+                        $performance_date = date('m/d/y', strtotime((string) $row['performance_date']));
+                    }
 
                     $output .= '<tr>
                         <td>' . htmlspecialchars($row['selection_title'] ?? '') . '</td>
@@ -136,7 +140,7 @@ if (isset($_POST["report_type"])) {
                         <td>' . htmlspecialchars($arranger_names['first']) . '</td>
                         <td>' . htmlspecialchars($arranger_names['last']) . '</td>
                         <td>' . htmlspecialchars($row['performance_group'] ?? '') . '</td>
-                        <td>' . htmlspecialchars($row['performance_date'] ?? '') . '</td>
+                        <td>' . htmlspecialchars($performance_date) . '</td>
                         <td>' . htmlspecialchars($venue) . '</td>
                         <td>' . htmlspecialchars($state) . '</td>
                     </tr>';
