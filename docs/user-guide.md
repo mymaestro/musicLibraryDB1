@@ -408,6 +408,12 @@ For optimal performance:
 
 ## Recent Updates and New Features
 
+### ACB Annual Performance Reporting (September 2026)
+- Association of Concert Bands (ACB) annual performance report
+- Automatic generation of licensing reports from concert data
+- Year-by-year performance tracking and CSV export
+- Integrated into Reports dashboard with download functionality
+
 ### Enhanced Search and Filtering (October 2025)
 - Real-time table filtering across all data views
 - Improved search performance and accuracy
