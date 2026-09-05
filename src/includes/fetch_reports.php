@@ -16,12 +16,141 @@ if (isset($_SESSION['username'])) {
 
 ferror_log("Running fetch_reports.php");
 
+function split_acb_name($full_name) {
+    $name = trim((string) $full_name);
+    if ($name === '') {
+        return array('first' => '', 'last' => '');
+    }
+
+    $name = preg_replace('/\s+/', ' ', $name);
+
+    if (strpos($name, ',') !== false) {
+        $parts = explode(',', $name, 2);
+        $last_name = trim($parts[0]);
+        $first_name = trim($parts[1]);
+        return array('first' => $first_name, 'last' => $last_name);
+    }
+
+    $parts = preg_split('/\s+/', $name);
+    if (count($parts) <= 1) {
+        return array('first' => '', 'last' => $name);
+    }
+
+    $last_name = array_pop($parts);
+    $first_name = implode(' ', $parts);
+
+    return array('first' => $first_name, 'last' => $last_name);
+}
+
 if (isset($_POST["report_type"])) {
     $report_type = $_POST["report_type"];
     $output = "";
     $f_link = f_sqlConnect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
     
     switch($report_type) {
+        case 'acb_annual_performance_report':
+            $selected_year = isset($_POST['year']) ? (int) $_POST['year'] : (int) date('Y');
+            $year_sql = 'SELECT DISTINCT YEAR(performance_date) AS report_year
+                         FROM concerts
+                         WHERE performance_date IS NOT NULL
+                         ORDER BY report_year DESC';
+            $year_res = mysqli_query($f_link, $year_sql);
+            $available_years = array();
+            while ($year_row = mysqli_fetch_assoc($year_res)) {
+                $available_years[] = (int) $year_row['report_year'];
+            }
+            if (empty($available_years)) {
+                $available_years[] = (int) date('Y');
+            }
+            if (!in_array($selected_year, $available_years, TRUE)) {
+                $selected_year = $available_years[0];
+            }
+
+            $year_start = $selected_year . '-01-01';
+            $year_end = $selected_year . '-12-31';
+
+            $sql = 'SELECT e.name AS performance_group,
+                           c.performance_date,
+                           c.venue,
+                           comp.name AS selection_title,
+                           comp.composer,
+                           comp.arranger,
+                           comp.catalog_number
+                    FROM concerts c
+                    LEFT JOIN playgrams pg ON c.id_playgram = pg.id_playgram
+                    LEFT JOIN playgram_items pi ON pg.id_playgram = pi.id_playgram
+                    LEFT JOIN compositions comp ON pi.catalog_number = comp.catalog_number
+                    LEFT JOIN ensembles e ON comp.ensemble = e.id_ensemble
+                    WHERE c.performance_date >= "' . mysqli_real_escape_string($f_link, $year_start) . '"
+                      AND c.performance_date <= "' . mysqli_real_escape_string($f_link, $year_end) . '"
+                    ORDER BY c.performance_date ASC, e.name ASC, comp.name ASC';
+
+            $output .= '<div class="table-responsive">
+                <h4><i class="fas fa-calendar-alt text-info"></i> Association of Concert Bands annual performance report</h4>
+                <p class="text-muted">Draft report of the concerts for the selected calendar year.</p>
+                <form id="acb-year-form" class="row g-3 align-items-end mb-3">
+                    <div class="col-md-4">
+                        <label for="acb_report_year" class="form-label">Reporting year</label>
+                        <select id="acb_report_year" name="year" class="form-select">';
+            foreach ($available_years as $year_option) {
+                $selected = ($year_option === $selected_year) ? ' selected' : '';
+                $output .= '<option value="' . $year_option . '"' . $selected . '>' . $year_option . '</option>';
+            }
+            $output .= '</select>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-primary w-100">Refresh</button>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="button" id="acb-download-csv" class="btn btn-success w-100">Download CSV</button>
+                    </div>
+                </form>
+                <table id="acb-report-table" class="table table-striped table-hover table-sm">
+                <thead class="table-dark">
+                <tr>
+                    <th>Title of selection</th>
+                    <th>Composer first</th>
+                    <th>Composer last</th>
+                    <th>Arranger first</th>
+                    <th>Arranger last</th>
+                    <th>Performance group</th>
+                    <th>Date</th>
+                    <th>Concert venue</th>
+                    <th>State</th>
+                </tr>
+                </thead>
+                <tbody>';
+
+            $res = mysqli_query($f_link, $sql);
+            if (mysqli_num_rows($res) > 0) {
+                while ($row = mysqli_fetch_assoc($res)) {
+                    $composer_names = split_acb_name($row['composer'] ?? '');
+                    $arranger_names = split_acb_name($row['arranger'] ?? '');
+                    $state = '';
+                    $venue = $row['venue'] ?? '';
+
+                    $output .= '<tr>
+                        <td>' . htmlspecialchars($row['selection_title'] ?? '') . '</td>
+                        <td>' . htmlspecialchars($composer_names['first']) . '</td>
+                        <td>' . htmlspecialchars($composer_names['last']) . '</td>
+                        <td>' . htmlspecialchars($arranger_names['first']) . '</td>
+                        <td>' . htmlspecialchars($arranger_names['last']) . '</td>
+                        <td>' . htmlspecialchars($row['performance_group'] ?? '') . '</td>
+                        <td>' . htmlspecialchars($row['performance_date'] ?? '') . '</td>
+                        <td>' . htmlspecialchars($venue) . '</td>
+                        <td>' . htmlspecialchars($state) . '</td>
+                    </tr>';
+                }
+            } else {
+                $output .= '<tr><td colspan="9" class="text-center text-muted">No performances found for the selected year.</td></tr>';
+            }
+            $output .= '</tbody></table>
+                <div class="alert alert-warning mt-3">
+                <strong>Note:</strong> This is a draft report. The current database stores composer and arranger names as single fields, so review the name splitting before submitting.
+                </div>
+                </div>';
+            break;
+
         case 'urgent_missing_pdfs_future_playgrams':
             $today = date('Y-m-d');
             $sql = 'SELECT pg.name AS playgram_name, pg.performance_date, c.catalog_number, c.name AS composition_name, c.composer,

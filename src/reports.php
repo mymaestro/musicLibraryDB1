@@ -22,6 +22,15 @@ $f_link = f_sqlConnect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 // Get counts for each report
 
 $report_counts = array();
+
+// ACB annual report: count of distinct years with concerts
+$sql = "SELECT COUNT(DISTINCT YEAR(performance_date)) as report_year_count FROM concerts WHERE performance_date IS NOT NULL";
+$res = mysqli_query($f_link, $sql);
+$report_counts['acb_report_year_count'] = 0;
+if ($res && mysqli_num_rows($res) > 0) {
+    $report_counts['acb_report_year_count'] = (int) mysqli_fetch_assoc($res)['report_year_count'];
+}
+
 // X. Compositions with parts but no PDFs
 $sql = "SELECT COUNT(DISTINCT c.catalog_number) as count
         FROM compositions c
@@ -290,6 +299,27 @@ mysqli_close($f_link);
                 </div>
             </div>
 
+            <div class="col-lg-4 col-md-6 mb-3">
+                <div class="card border-info">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h6 class="card-title text-info">
+                                    <i class="fas fa-calendar-alt"></i> ACB concert performance report
+                                </h6>
+                                <h3 class="text-info"><?php echo number_format($report_counts['acb_report_year_count']); ?> years</h3>
+                                <small class="text-muted">Concert data available for reporting</small>
+                            </div>
+                            <div class="align-self-center">
+                                <button class="btn btn-outline-info btn-sm report-btn" data-report="acb_annual_performance_report">
+                                    Generate Report
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <?php if ($u_librarian || $u_admin): ?>
             <div class="col-lg-4 col-md-6 mb-3">
                 <div class="card border-success">
@@ -403,6 +433,61 @@ $(document).ready(function() {
         });
     });
     
+    $(document).on('submit', '#acb-year-form', function(e) {
+        e.preventDefault();
+        var year = $('#acb_report_year').val();
+
+        $.ajax({
+            url: 'index.php?action=fetch_reports',
+            type: 'POST',
+            data: {
+                report_type: 'acb_annual_performance_report',
+                year: year
+            },
+            success: function(data) {
+                $('#report_detail').html(data);
+                $('#view_data_modal').modal('show');
+            },
+            error: function() {
+                alert('Error refreshing the ACB report. Please try again.');
+            }
+        });
+    });
+
+    $(document).on('click', '#acb-download-csv', function() {
+        var table = document.getElementById('acb-report-table');
+        if (!table) {
+            alert('No ACB report table is available to export.');
+            return;
+        }
+
+        var rows = Array.from(table.querySelectorAll('tr'));
+        var csvRows = [];
+
+        rows.forEach(function(row) {
+            var cells = Array.from(row.querySelectorAll('th, td'));
+            var values = cells.map(function(cell) {
+                var text = (cell.textContent || '').replace(/\r?\n/g, ' ').trim();
+                return '"' + text.replace(/"/g, '""') + '"';
+            });
+            csvRows.push(values.join(','));
+        });
+
+        var csvContent = csvRows.join('\n');
+        var blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        var url = URL.createObjectURL(blob);
+        var link = document.createElement('a');
+        var year = $('#acb_report_year').val() || 'report';
+
+        link.href = url;
+        link.setAttribute('download', 'acb-annual-report-' + year + '.csv');
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    });
+
     // Handle cleanup button clicks (delegated event since button is dynamically loaded)
     $(document).on('click', '#cleanup-tokens-btn', function() {
         var button = $(this);
