@@ -1,4 +1,9 @@
 /*M!999999\- enable the sandbox mode */ 
+-- Baseline schema for a fresh AllanaCrusis installation.
+-- This file contains the core application tables needed to bootstrap the system.
+-- Demo and production dumps may include additional operational tables such as
+-- config, download_tokens, and legacy data tables.
+--
 -- MariaDB dump 10.19  Distrib 10.11.11-MariaDB, for Linux (x86_64)
 --
 -- Host: localhost    Database: musicLibraryDB
@@ -89,6 +94,42 @@ CREATE TABLE `concerts` (
   CONSTRAINT `concerts_ibfk_1` FOREIGN KEY (`id_playgram`) REFERENCES `playgrams` (`id_playgram`)
 ) ENGINE=InnoDB AUTO_INCREMENT=113 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci COMMENT='This table keeps concerts performance data.';
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `config`
+--
+
+CREATE TABLE IF NOT EXISTS `config` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `config_key` VARCHAR(255) NOT NULL UNIQUE COMMENT 'Configuration key (e.g., ORGNAME)',
+  `value` LONGTEXT NOT NULL COMMENT 'Configuration value',
+  `type` ENUM('string', 'integer', 'boolean', 'url', 'path', 'email') NOT NULL DEFAULT 'string' COMMENT 'Data type for validation',
+  `description` TEXT COMMENT 'Description of what this setting does',
+  `usage` TEXT COMMENT 'Where and how this setting is used in the application',
+  `default_value` LONGTEXT COMMENT 'Default value if not set',
+  `is_required` BOOLEAN DEFAULT FALSE COMMENT 'Whether this setting is required',
+  `is_readonly` BOOLEAN DEFAULT FALSE COMMENT 'If true, cannot be edited via web interface',
+  `category` VARCHAR(100) COMMENT 'Settings category (e.g., Organization, Paths, Email, System)',
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `updated_by` VARCHAR(255) COMMENT 'Username of last person to update this setting',
+  INDEX idx_category (category),
+  INDEX idx_config_key (config_key)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+INSERT INTO `config` (`config_key`, `value`, `type`, `description`, `usage`, `default_value`, `is_required`, `is_readonly`, `category`, `updated_by`) VALUES
+('ORGNAME', '4th Wind', 'string', 'Organization name', 'Displayed in page titles, headers, and browser tabs throughout the application', '4th Wind', 1, 0, 'Organization', 'system'),
+('ORGDESC', 'Fourth Wind Wind Ensemble', 'string', 'Organization description', 'Used in meta tags for SEO and displayed on the home page', 'Fourth Wind Wind Ensemble', 1, 0, 'Organization', 'system'),
+('ORGHOME', 'https://library.allanacrusis.com/', 'url', 'Organization website home URL', 'Base URL for most links users see. Used in navigation, breadcrumbs, and redirect URLs', 'https://library.allanacrusis.com/', 1, 0, 'Organization', 'system'),
+('ORGLOGO', 'images/logo.png', 'string', 'Logo image path (relative to public directory)', 'Displayed in page headers and navigation bars', 'images/logo.png', 0, 0, 'Organization', 'system'),
+('ORGMAIL', 'librarian@allanacrusis.com', 'email', 'Organization contact email', 'Used in contact forms, email notifications, and the footer', 'librarian@allanacrusis.com', 0, 0, 'Organization', 'system'),
+('ORGRECORDINGS', 'https://library.allanacrusis.com/files/recordings/', 'url', 'Public URL for accessing recordings', 'Used to construct download URLs for recordings accessible to users. Useful if you store recordings on a separate server or CDN', 'https://library.allanacrusis.com/files/recordings/', 1, 0, 'Paths', 'system'),
+('DOWNLOAD_TOKEN_EXPIRY_DAYS', '5', 'integer', 'Number of days download tokens remain valid', 'Controls how long temporary download links work before they expire. Used when generating distribution links', '5', 0, 0, 'System', 'system'),
+('REGION', 'HOME', 'string', 'Region/location identifier', 'Used to identify different library locations or branches in multi-location setups', 'HOME', 0, 0, 'System', 'system'),
+('DEBUG', '1', 'boolean', 'Enable debug mode (0=off, 1=on)', 'When enabled, writes detailed debugging information to application error logs. Disable in production for better performance', '0', 0, 0, 'System', 'system'),
+('CHUNKED_UPLOAD_ENABLED', '1', 'boolean', 'Enable chunked file uploads', 'When enabled, large files are uploaded in smaller chunks to avoid PHP memory and timeout limits. Recommended for production environments', '1', 0, 0, 'Uploads', 'system'),
+('CHUNK_SIZE_MB', '2', 'integer', 'Size of each upload chunk in megabytes', 'Must be less than PHP post_max_size setting. Smaller chunks are more reliable but slower. Typical values: 2MB (development), 10MB (production), 20MB (enterprise)', '2', 0, 0, 'Uploads', 'system'),
+('CHUNKED_UPLOAD_THRESHOLD_MB', '7', 'integer', 'File size threshold in MB to trigger chunked uploads', 'Files larger than this will use chunked upload. Must be less than PHP post_max_size. Should be set based on your PHP configuration and network reliability', '7', 0, 0, 'Uploads', 'system');
 
 --
 -- Table structure for table `download_tokens`
@@ -392,6 +433,21 @@ CREATE TABLE `sections` (
   CONSTRAINT `fk_section_leader` FOREIGN KEY (`section_leader`) REFERENCES `users` (`id_users`) ON DELETE SET NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci COMMENT='Groups of part types (sections, e.g. Brass, Woodwinds)';
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `section_instruments`
+--
+
+DROP TABLE IF EXISTS `section_instruments`;
+CREATE TABLE `section_instruments` (
+  `id_section` int(10) unsigned NOT NULL COMMENT 'Section ID',
+  `id_instrument` int(10) unsigned NOT NULL COMMENT 'Instrument ID',
+  PRIMARY KEY (`id_section`, `id_instrument`),
+  KEY `fk_section_instruments_section` (`id_section`),
+  KEY `fk_section_instruments_instrument` (`id_instrument`),
+  CONSTRAINT `fk_section_instruments_section` FOREIGN KEY (`id_section`) REFERENCES `sections` (`id_section`) ON DELETE CASCADE,
+  CONSTRAINT `fk_section_instruments_instrument` FOREIGN KEY (`id_instrument`) REFERENCES `instruments` (`id_instrument`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci COMMENT='Links sections to instruments (many-to-many)';
 
 --
 -- Table structure for table `users`

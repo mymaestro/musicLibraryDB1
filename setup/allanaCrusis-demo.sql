@@ -98,6 +98,14 @@ INSERT INTO `compositions` VALUES ('R008','Alice Where Art Thou','Lyrical piece 
 INSERT INTO `compositions` VALUES ('R009','Anitra\'s Dance','From Peer Gynt Suite arranged by Richard E. Hildreth.','Edvard Grieg','Richard E. Hildreth',NULL,'Walter Jacobs','R','CB',3.5,'2024-04-18',180,NULL,'Exotic dance from Grieg\'s Peer Gynt with characteristic Middle Eastern flavors.','Capture the exotic character. Focus on the unique rhythmic patterns.','Cabinet D, Shelf 7','P','2024-01-14',0.00,NULL,'https://bandmusicpdf.org/anitrasdance/','L',NULL,'','2024-04-18','2025-08-10 12:00:00',1);
 INSERT INTO `compositions` VALUES ('W001','Robert le Diable','Selection from Meyerbeer\'s opera arranged by Louis-Philippe Laurendeau.','Giacomo Meyerbeer','Louis-Philippe Laurendeau',NULL,'Carl Fischer','W','CB',4.5,'2024-01-10',420,NULL,'Operatic selection featuring the most memorable themes from Meyerbeer\'s grand opera.','Requires strong technical ability. Focus on operatic style and dramatic expression.','Cabinet E, Shelf 1','P','2023-08-22',0.00,NULL,'https://bandmusicpdf.org/robertdiable-lau-br/','L',NULL,'','2024-01-10','2025-08-10 12:00:00',1);
 INSERT INTO `compositions` VALUES ('W002','Die Meistersinger von Nürnberg','Selection from Wagner\'s opera arranged by Theo. Moses Tobani.','Richard Wagner','Theo. Moses Tobani',NULL,'Edwin F. Kalmus','W','CB',5.0,'2023-11-20',480,NULL,'Magnificent selection from Wagner\'s comedy featuring the most famous themes.','Very challenging. Requires advanced ensemble and individual technique.','Cabinet E, Shelf 2','P','2023-07-30',0.00,NULL,'https://bandmusicpdf.org/diemeistersinger/','L',NULL,'','2023-11-20','2025-08-10 12:00:00',1);
+INSERT INTO `compositions` VALUES ('C002','Pathetic Symphony: Two Excerpts','Two excerpts from Tchaikovsky\'s Pathetic Symphony: Andante from the first movement and March from the third movement.','Tchaikovsky, P. I.','Fletcher',NULL,'Hawkes & Son','T','CB',5.0,'2026-03-21',NULL,NULL,'Instrumentation: condensed score, D-flat piccolo, flute, oboe, bassoon I-II, E-flat soprano clarinet, B-flat soprano clarinet solo-I-II-III, E-flat alto clarinet, B-flat bass clarinet, E-flat alto saxophone, B-flat tenor saxophone, E-flat baritone saxophone, B-flat cornet I-II, B-flat trumpet, E-flat horn or alto I-II-III-IV, horn in F I-II-III-IV, trombone I-II-III, euphonium, timpani, and percussion including bass drum, crash cymbals, and snare drum. Program note: The Andante follows a gloomy and restless opening and offers a message of consolation; the fiery March develops a two-bar theme into a stirring and brilliant movement. The original symphony is Tchaikovsky\'s Sixth Symphony, Op. 74, written in 1893.','Advanced Grade 5 transcription. Balance the contrasting excerpts carefully, preserve the lyrical character of the Andante, and maintain clarity and brilliance in the March.','Cabinet B, Shelf 8','P','2025-01-15',0.00,NULL,'https://www.windrep.org/Two_Excerpts_from_%22The_Pathetic_Symphony%22','L',NULL,'','2026-03-21','2026-09-05 12:00:00',1);
+INSERT INTO `compositions` VALUES ('C003','Poet and Peasant Overture','Overture by Franz von Suppe, arranged by Miguel C. Meyrelles and revised by Safranek.','Suppé, Franz von','Meyrelles, Miguel C.',NULL,'Carl Fischer','B','CB',NULL,'2025-02-15',630,NULL,'Instrumentation: full score, D-flat piccolo, D-flat flute, oboe, bassoon, E-flat soprano clarinet, B-flat soprano clarinet solo-I-II-III, E-flat alto clarinet, B-flat soprano saxophone, E-flat alto saxophone, B-flat tenor saxophone, E-flat baritone saxophone, E-flat cornet, B-flat cornets solo-I-II-III, E-flat horn or alto I-II-III-I, tenor horn I-II, trombone I-II-III, euphonium, tuba, and percussion including bass drum and side drum. Program notes describe a comedy with songs whose overture combines a brass chorale, lyrical melodies, a graceful waltz, rhythmic drive, and a powerful close. Arrangement history: original work 1845, later versions 1883 and 1911. Kansas state rating: Grade IV.','Approximately 10 minutes 30 seconds. Balance the brass chorale, returning 8- or 16-measure themes, waltz, and fast staccato sections carefully; keep the side drum and bass drum clear without covering the melodic layers.','Cabinet B, Shelf 9','P','2025-01-15',0.00,NULL,'https://www.windrep.org/Poet_and_Peasant_Overture_(arr_Meyrelles)','L',NULL,'','2025-02-15','2026-09-05 12:00:00',1);
+INSERT INTO `compositions` VALUES ('C004','Slavonic Rhapsody','Concert work by Carl Friedemann arranged for modern concert band.','Friedemann, Carl','Lake, Mayhew L.',NULL,'Carl Fischer','B','CB',5.0,'2026-07-04',NULL,NULL,'Concert-band arrangement with score, bells, and two timpani.','Advanced concert work requiring attention to balance, percussion color, and rhythmic precision.','Cabinet B, Shelf 10','P','2025-01-15',0.00,NULL,NULL,'L',NULL,'','2026-07-04','2026-09-05 12:00:00',1);
+INSERT INTO `compositions` VALUES ('C005','Carnival of Venice: Humorous Variations','Humorous variations on Carnival of Venice arranged for concert band.','Unknown','Winterbottom, Frank',NULL,'Hawkes & Son','B','CB',4.0,'2025-12-13',NULL,NULL,'Concert-band variation work based on Carnival of Venice.','Keep the variation changes distinct and support the featured lines carefully.','Cabinet B, Shelf 11','P','2025-01-15',0.00,NULL,NULL,'L',NULL,'','2025-12-13','2026-09-05 12:00:00',1);
+INSERT INTO `compositions` VALUES ('M014','The Earle of Oxford\'s March from William Byrd Suite','March from Gordon Jacob\'s William Byrd Suite.','Jacob, Gordon',NULL,NULL,'Boosey & Co.','M','CB',5.0,'2025-05-17',NULL,NULL,'March from the William Byrd Suite for concert band.','Maintain a firm march pulse while preserving the character of the suite.','Cabinet A, Shelf 13','P','2025-01-15',0.00,NULL,NULL,'L',NULL,'','2025-05-17','2026-09-05 12:00:00',1);
+INSERT INTO `compositions` VALUES ('M015','Washington Grays','Traditional march by Claudio Grafulla arranged by G. H. Reeves and Louis-Philippe Laurendeau.','Grafulla, Claudio','Reeves, G. H. [Louis-Philippe Laurendeau]',NULL,'Carl Fischer','M','CB',5.0,'2025-05-17',NULL,NULL,'Grafulla\'s best-known march in a modern concert-band edition.','Use a clear, traditional march style with precise articulation and strong dynamic contrast.','Cabinet A, Shelf 14','P','2025-01-15',0.00,NULL,NULL,'L',NULL,'','2025-05-17','2026-09-05 12:00:00',1);
+INSERT INTO `compositions` VALUES ('M016','American Eagle March','March by W. Earl Stroup arranged by Harry L. Alford.','Stroup, W. Earl','Alford, Harry L.',NULL,'The Fillmore Bros. Co.','M','CB',4.0,'2025-05-17',NULL,NULL,'American march for concert band.','Keep the march buoyant and maintain clean articulation through the melodic material.','Cabinet A, Shelf 15','P','2025-01-15',0.00,NULL,NULL,'L',NULL,'','2025-05-17','2026-09-05 12:00:00',1);
+INSERT INTO `compositions` VALUES ('M017','The Nutcracker March','March from Tchaikovsky\'s The Nutcracker arranged for concert band.','Tchaikovsky, P. I.','Hanna, Paul',NULL,'TBQ Press','H','CB',3.0,'2025-12-13',180,NULL,'A short contemporary holiday march based on music from The Nutcracker.','A compact Grade 3 holiday selection suitable for a Christmas concert.','Cabinet D, Shelf 8','P','2025-01-15',0.00,NULL,NULL,'L',NULL,'','2025-12-13','2026-09-05 12:00:00',1);
 /*!40000 ALTER TABLE `compositions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -132,6 +140,11 @@ INSERT INTO `concerts` VALUES (2,3,'2023-12-20','First Methodist Church','Mary J
 INSERT INTO `concerts` VALUES (3,2,'2024-03-15','High School Auditorium','John Smith','Spring classical concert');
 INSERT INTO `concerts` VALUES (4,4,'2024-02-14','Jazz Club','Mike Davis','Valentine\'s Day jazz night');
 INSERT INTO `concerts` VALUES (5,5,'2024-06-15','City Park Bandstand','John Smith','Summer march concert in the park');
+INSERT INTO `concerts` VALUES (6,6,'2025-02-15','Civic Auditorium','John Smith','Winter concert featuring major overtures and symphonic transcriptions');
+INSERT INTO `concerts` VALUES (7,7,'2025-05-17','Riverside Pavilion','John Smith','Spring march concert');
+INSERT INTO `concerts` VALUES (8,8,'2025-12-13','Community Center','Mary Johnson','Holiday concert with traditional and contemporary selections');
+INSERT INTO `concerts` VALUES (9,9,'2026-03-21','High School Auditorium','John Smith','Spring classics concert');
+INSERT INTO `concerts` VALUES (10,10,'2026-07-04','City Park Bandstand','John Smith','Independence Day concert');
 /*!40000 ALTER TABLE `concerts` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -639,6 +652,21 @@ INSERT INTO `playgram_items` VALUES (4,3,'H001',1);
 INSERT INTO `playgram_items` VALUES (5,4,'J001',1);
 INSERT INTO `playgram_items` VALUES (6,5,'M001',1);
 INSERT INTO `playgram_items` VALUES (7,5,'M002',2);
+INSERT INTO `playgram_items` VALUES (8,6,'C003',1);
+INSERT INTO `playgram_items` VALUES (9,6,'C002',2);
+INSERT INTO `playgram_items` VALUES (10,6,'C004',3);
+INSERT INTO `playgram_items` VALUES (11,7,'M014',1);
+INSERT INTO `playgram_items` VALUES (12,7,'M015',2);
+INSERT INTO `playgram_items` VALUES (13,7,'M016',3);
+INSERT INTO `playgram_items` VALUES (14,8,'H001',1);
+INSERT INTO `playgram_items` VALUES (15,8,'M017',2);
+INSERT INTO `playgram_items` VALUES (16,8,'C005',3);
+INSERT INTO `playgram_items` VALUES (17,9,'C002',1);
+INSERT INTO `playgram_items` VALUES (18,9,'C003',2);
+INSERT INTO `playgram_items` VALUES (19,9,'M014',3);
+INSERT INTO `playgram_items` VALUES (20,10,'M015',1);
+INSERT INTO `playgram_items` VALUES (21,10,'M016',2);
+INSERT INTO `playgram_items` VALUES (22,10,'C004',3);
 /*!40000 ALTER TABLE `playgram_items` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -668,9 +696,14 @@ LOCK TABLES `playgrams` WRITE;
 /*!40000 ALTER TABLE `playgrams` DISABLE KEYS */;
 INSERT INTO `playgrams` VALUES (1,'Patriotic Concert','A patriotic concert featuring American marches and favorites','2024-07-04',1);
 INSERT INTO `playgrams` VALUES (2,'Classical Showcase','An evening of classical masterworks arranged for band','2024-03-15',1);
-INSERT INTO `playgrams` VALUES (3,'Holiday Concert','Annual Christmas concert featuring seasonal favorites','2024-12-20',1);
+INSERT INTO `playgrams` VALUES (3,'Holiday Concert','Annual Christmas concert featuring seasonal favorites','2023-12-20',1);
 INSERT INTO `playgrams` VALUES (4,'Jazz Night','An evening of jazz and popular music','2024-02-14',1);
-INSERT INTO `playgrams` VALUES (5,'March Madness','Concert featuring the best American marches','2024-06-16',1);
+INSERT INTO `playgrams` VALUES (5,'March Madness','Concert featuring the best American marches','2024-06-15',1);
+INSERT INTO `playgrams` VALUES (6,'Winter Classics','Major overtures and symphonic transcriptions arranged for concert band','2025-02-15',1);
+INSERT INTO `playgrams` VALUES (7,'Spring Marches','Traditional and modern marches for concert band','2025-05-17',1);
+INSERT INTO `playgrams` VALUES (8,'Holiday Concert 2025','Traditional and contemporary holiday music for concert band','2025-12-13',1);
+INSERT INTO `playgrams` VALUES (9,'Spring Classics 2026','A program of major works and concert marches','2026-03-21',1);
+INSERT INTO `playgrams` VALUES (10,'Independence Day 2026','American marches and concert works for the summer bandstand','2026-07-04',1);
 /*!40000 ALTER TABLE `playgrams` ENABLE KEYS */;
 UNLOCK TABLES;
 
