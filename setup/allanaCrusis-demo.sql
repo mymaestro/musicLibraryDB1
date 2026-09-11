@@ -151,6 +151,7 @@ UNLOCK TABLES;
 --
 -- Table structure for table `download_tokens`
 --
+DROP TABLE IF EXISTS `download_tokens`;
 CREATE TABLE download_tokens (
   id_download_token INT AUTO_INCREMENT PRIMARY KEY,
   token VARCHAR(64) NOT NULL UNIQUE COMMENT 'The unique download token (use a secure random string).',
